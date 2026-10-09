@@ -13,7 +13,6 @@ def organize_corpus_documents():
     for file in os.listdir(root):
         if file.endswith(".txt"):
             # Get the text id
-            text_id = file.split(".")[0]
             country = file.split(".")[1]
 
             # Make dir
