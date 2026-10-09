@@ -17,5 +17,11 @@ CHARACTERS_TO_REMOVE = [",", ";", ".", "?", "!", '"']
 # Prune And Combine Country Word Data Params
 MIN_DOC_FREQ = 5  # How many docs within a country's corpus a word must appear in for us to not prune it
 META_COLS = [COUNTRY_CODE_COLUMN_TITLE]
-INTIAL_COUNTRIES_TO_COMPARE = ["us", "ng", "gb"]
-COMBINED_WORD_DATA_FILE = "combined_word_counts.parquet"
+BASELINE_COMPARISON_COUNTRIES = ["us", "ng", "gb"]
+BASELINE_DATA_FOLDER = "Baseline_Data"
+BASELINE_COMBINED_WORD_DATA_FILE = "baseline_tfidf_word_data.npz"
+BASELINE_COMBINED_METADATA_FILE = "baseline_metadata.parquet"
+BASELINE_TF_IDF_TRANSFORMER_FILE = "baseline_tf_idf_transformer.joblib"
+BASELINE_VOCABULARY_FILE = "baseline_vocabulary.json"
+
+ADDITIONAL_COUNTRIES_TO_COMPARE = ["hk", "ph", "au"]
