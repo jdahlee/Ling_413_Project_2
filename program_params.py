@@ -17,4 +17,5 @@ CHARACTERS_TO_REMOVE = [",", ";", ".", "?", "!", '"']
 # Prune And Combine Country Word Data Params
 MIN_DOC_FREQ = 5  # How many docs within a country's corpus a word must appear in for us to not prune it
 META_COLS = [COUNTRY_CODE_COLUMN_TITLE]
-COUNTRY_DATA_CAP_INCLUDE_ALL_FLAG = -1
+INTIAL_COUNTRIES_TO_COMPARE = ["us", "ng", "gb"]
+COMBINED_WORD_DATA_FILE = "combined_word_counts.parquet"
