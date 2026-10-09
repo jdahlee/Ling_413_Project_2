@@ -1,3 +1,6 @@
+# Random Seed
+RANDOM_SEED = 1
+
 # Corpus Extraction Params
 CORPUS_DOCUMENTS_FOLDER = "Country_Corpus"
 GLOWBE_DATA_FOLDER_PATH = "GlowBe_Data"
@@ -6,7 +9,7 @@ GLOWBE_DATA_FOLDER_PATH = "GlowBe_Data"
 COUNTRY_DOCUMENT_NO_CAP_FLAG = -1
 COUNTRY_DOCUMENT_CAP = 2500  # Set to COUNTRY_DOCUMENT_NO_CAP_FLAG to remove cap
 COUNTRY_CODE_COLUMN_TITLE = "Country Code"
-COUNTRY_WORD_FREQUENCY_DATA_FOLDER = "Country Word Frequency Data"
+COUNTRY_WORD_FREQUENCY_DATA_FOLDER = "Country_Word_Frequency_Data"
 
 REMOVE_STOP_WORDS = True
 CHARACTERS_TO_REMOVE = [",", ";", ".", "?", "!", '"']
