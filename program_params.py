@@ -24,4 +24,12 @@ BASELINE_COMBINED_METADATA_FILE = "baseline_metadata.parquet"
 BASELINE_TF_IDF_TRANSFORMER_FILE = "baseline_tf_idf_transformer.joblib"
 BASELINE_VOCABULARY_FILE = "baseline_vocabulary.json"
 
-ADDITIONAL_COUNTRIES_TO_COMPARE = ["hk", "ph", "au"]
+# Baseline Countries Analysis Params
+DOCUMENT_COMPARISON_ITERATIONS = 1000
+BASELINE_COMPARISON_GRAPH_FILE = "baseline_comparison.png"
+ANALYSIS_OUTPUT_FOLDER = "Analysis_Output"
+
+# Additional Countries Analysis Params
+# ADDITIONAL_COUNTRIES_TO_COMPARE = ["hk", "ph", "au"]
+ADDITIONAL_COUNTRIES_TO_COMPARE = ["hk"]
+ADDITIONAL_COMPARISON_GRAPH_FILE_AFFIX = "_comparison.png"
