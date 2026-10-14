@@ -3,12 +3,12 @@ import random
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from matplotlib.pyplot import figure
 from scipy.sparse import load_npz
-from sklearn.metrics.pairwise import euclidean_distances
-from sklearn.preprocessing import StandardScaler
+from sklearn.metrics.pairwise import cosine_similarity
 
 from program_params import (
     ANALYSIS_OUTPUT_FOLDER,
@@ -16,6 +16,7 @@ from program_params import (
     BASELINE_COMBINED_WORD_DATA_FILE,
     BASELINE_COMPARISON_GRAPH_FILE,
     BASELINE_DATA_FOLDER,
+    BASELINE_SIMILARITY_FIGURES_FILE,
     COUNTRY_CODE_COLUMN_TITLE,
     DOCUMENT_COMPARISON_ITERATIONS,
     RANDOM_SEED,
@@ -42,10 +43,12 @@ def analyze_baseline_data():
     random.seed(RANDOM_SEED)
     sample_results = []
 
+    similarities_dict = {"Same": [], "Different": [], "Total": []}
+
     for i in range(DOCUMENT_COMPARISON_ITERATIONS):
         index_1, index_2 = random.sample(range(baseline_data_num_documents), 2)
 
-        distance = euclidean_distances(
+        similarity = cosine_similarity(
             baseline_word_data[index_1],
             baseline_word_data[index_2],
         )[0, 0]
@@ -55,35 +58,33 @@ def analyze_baseline_data():
 
         register = "_".join(sorted([str(country1), str(country2)]))
         status = "Same" if country1 == country2 else "Different"
+        similarities_dict[status].append(similarity)
+        similarities_dict["Total"].append(similarity)
 
-        sample_results.append([register, distance, status])
+        sample_results.append([register, similarity, status])
+
+    output_similarity_data(similarities_dict, BASELINE_SIMILARITY_FIGURES_FILE)
 
     results_df = pd.DataFrame(
         sample_results,
-        columns=["Register", "Distance", "Status"],
+        columns=["Register", "Similarity", "Status"],
     )
 
     results_df.sort_values(
-        ["Status", "Register"],
+        ["Status", "Similarity"],
         inplace=True,
     )
 
-    scaler = StandardScaler()
-    results_df.loc[:, "Distance"] = scaler.fit_transform(
-        results_df[["Distance"]]
-    ).ravel()
-
     figure(figsize=(10, 5))
-    ax = sns.stripplot(
+    sns.stripplot(
         data=results_df,
         x="Register",
-        y="Distance",
+        y="Similarity",
         hue="Status",
         jitter=True,
         size=3,
     )
     plt.xticks(rotation=45)
-    ax.set_ylim([-3, 3])
     plt.tight_layout()
 
     os.makedirs(ANALYSIS_OUTPUT_FOLDER, exist_ok=True)
@@ -109,6 +110,21 @@ def get_combined_baseline_metadata():
         BASELINE_COMBINED_METADATA_FILE,
     )
     return pd.read_parquet(baseline_metadata_path)
+
+
+def output_similarity_data(similarities_dict: dict, figures_file_name: str):
+    output = f"{'Register':<20} {'T1 Score':>10} {'Std Dev':>10}"
+    output += f"\n{'-' * 42}"
+
+    for k, v in similarities_dict.items():
+        mean = np.mean(v)
+        std = np.std(v)
+        output += f"\n{k:<20} {mean:>10.4f} {std:>10.4f}"
+
+    output_path = Path(ANALYSIS_OUTPUT_FOLDER, figures_file_name)
+    with open(output_path, "w") as f:
+        f.write(output)
+    print(f"Output similarity data figures to {output_path}")
 
 
 if __name__ == "__main__":

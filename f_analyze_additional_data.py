@@ -1,6 +1,7 @@
 import json
 import os
 import random
+from collections import defaultdict
 from pathlib import Path
 
 import joblib
@@ -8,13 +9,13 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from matplotlib.pyplot import figure
-from sklearn.metrics.pairwise import euclidean_distances
-from sklearn.preprocessing import StandardScaler
+from sklearn.metrics.pairwise import cosine_similarity
 
 from d_create_combined_baseline_data import prune_and_load
 from e_analyze_baseline_data import (
     get_combined_baseline_metadata,
     get_combined_baseline_word_data,
+    output_similarity_data,
 )
 from program_params import (
     ADDITIONAL_COMPARISON_GRAPH_FILE_AFFIX,
@@ -83,6 +84,7 @@ def analyze_additional_data():
     random.seed(RANDOM_SEED)
     for country_df in additional_country_dfs:
         sample_results = []
+        similarity_dict = defaultdict(list)
 
         comparison_country = country_df.iloc[0][COUNTRY_CODE_COLUMN_TITLE]
         word_cols = country_df.columns.difference(META_COLS)
@@ -93,7 +95,7 @@ def analyze_additional_data():
             baseline_index = random.randrange(baseline_data_num_documents)
             comparison_index = random.randrange(tf_idf_transformed_num_documents)
 
-            distance = euclidean_distances(
+            similarity = cosine_similarity(
                 baseline_word_data[baseline_index],
                 tf_idf_transformed_word_data[comparison_index],
             )[0, 0]
@@ -104,11 +106,15 @@ def analyze_additional_data():
 
             register = "_".join([str(baseline_country), str(comparison_country)])
 
-            sample_results.append([register, distance])
+            sample_results.append([register, similarity])
+            similarity_dict[register].append(similarity)
+
+        figures_file_name = comparison_country + "_similarity_figures.txt"
+        output_similarity_data(similarity_dict, figures_file_name)
 
         results_df = pd.DataFrame(
             sample_results,
-            columns=["Register", "Distance"],
+            columns=["Register", "Similarity"],
         )
 
         results_df.sort_values(
@@ -116,22 +122,16 @@ def analyze_additional_data():
             inplace=True,
         )
 
-        scaler = StandardScaler()
-        results_df.loc[:, "Distance"] = scaler.fit_transform(
-            results_df[["Distance"]]
-        ).ravel()
-
         figure(figsize=(10, 5))
-        ax = sns.stripplot(
+        sns.stripplot(
             data=results_df,
             x="Register",
-            y="Distance",
+            y="Similarity",
             hue="Register",
             jitter=True,
             size=3,
         )
         plt.xticks(rotation=45)
-        ax.set_ylim([-3, 3])
         plt.tight_layout()
 
         os.makedirs(ANALYSIS_OUTPUT_FOLDER, exist_ok=True)
