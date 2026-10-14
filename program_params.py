@@ -7,7 +7,7 @@ GLOWBE_DATA_FOLDER_PATH = "GlowBe_Data"
 
 # Word Frequncy Extraction Params
 COUNTRY_DOCUMENT_NO_CAP_FLAG = -1
-COUNTRY_DOCUMENT_CAP = 2500  # Set to COUNTRY_DOCUMENT_NO_CAP_FLAG to remove cap
+COUNTRY_DOCUMENT_CAP = 5000  # Set to COUNTRY_DOCUMENT_NO_CAP_FLAG to remove cap
 COUNTRY_CODE_COLUMN_TITLE = "Country Code"
 COUNTRY_WORD_FREQUENCY_DATA_FOLDER = "Country_Word_Frequency_Data"
 
@@ -27,9 +27,12 @@ BASELINE_VOCABULARY_FILE = "baseline_vocabulary.json"
 # Baseline Countries Analysis Params
 DOCUMENT_COMPARISON_ITERATIONS = 1000
 BASELINE_COMPARISON_GRAPH_FILE = "baseline_comparison.png"
+BASELINE_SIMILARITY_FIGURES_FILE = "baseline_similarity_figures.txt"
 ANALYSIS_OUTPUT_FOLDER = "Analysis_Output"
+PSEUDO_DOC_SIZE = 25  # documents merged per pseudo-document (1 = no merging)
+SUBLINEAR_TF = True
 
 # Additional Countries Analysis Params
 # ADDITIONAL_COUNTRIES_TO_COMPARE = ["hk", "ph", "au"]
-ADDITIONAL_COUNTRIES_TO_COMPARE = ["hk"]
+ADDITIONAL_COUNTRIES_TO_COMPARE = ["hk", "in", "ph"]
 ADDITIONAL_COMPARISON_GRAPH_FILE_AFFIX = "_comparison.png"
