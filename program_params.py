@@ -28,6 +28,7 @@ BASELINE_VOCABULARY_FILE = "baseline_vocabulary.json"
 DOCUMENT_COMPARISON_ITERATIONS = 1000
 BASELINE_COMPARISON_GRAPH_FILE = "baseline_comparison.png"
 BASELINE_SIMILARITY_FIGURES_FILE = "baseline_similarity_figures.txt"
+BASELINE_T1_FIGURES_FILE = "baseline_t1_figures.txt"
 ANALYSIS_OUTPUT_FOLDER = "Analysis_Output"
 PSEUDO_DOC_SIZE = 25  # documents merged per pseudo-document (1 = no merging)
 SUBLINEAR_TF = True
